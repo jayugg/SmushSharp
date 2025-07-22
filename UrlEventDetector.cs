@@ -1,11 +1,11 @@
 ﻿#nullable enable
 using System.Runtime.InteropServices;
 
-namespace Mush;
+namespace SmushSharp;
 
-public static partial class UrlDetector
+public static partial class UrlEventDetector
 {
-    [LibraryImport("Lib/libUrlHandler.dylib")]
+    [LibraryImport("libsmush.dylib")]
     static partial void detect_launch_url(UrlCallback callback, double timeoutSeconds);
     private delegate void UrlCallback([MarshalAs(UnmanagedType.LPStr)] string url);
 
