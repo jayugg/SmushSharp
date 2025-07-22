@@ -6,14 +6,14 @@ namespace SmushSharp;
 public static partial class UrlEventDetector
 {
     [LibraryImport("libsmush.dylib")]
-    static partial void detect_launch_url(UrlCallback callback, double timeoutSeconds);
+    static partial void DetectLaunchUrl(UrlCallback callback, double timeoutSeconds);
     private delegate void UrlCallback([MarshalAs(UnmanagedType.LPStr)] string url);
 
     // Public API
     public static string? DetectLaunchUrl(double timeoutSeconds)
     {
         string? result = null;
-        detect_launch_url(u => result = u, timeoutSeconds);
+        DetectLaunchUrl(u => result = u, timeoutSeconds);
         return result;
     }
 }
