@@ -7,7 +7,7 @@
         <!-- NuGet metadata -->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>SmushSharp</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <Authors>jayu</Authors>
         <Description>Simple macOS URL-scheme handler shim for .NET 8 (x64)</Description>
         <PackageTags>macos;cocoa;url;scheme;interop</PackageTags>
