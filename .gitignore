@@ -4,3 +4,7 @@ runtimes/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+smush/.idea/modules.xml
+smush/.idea/smush.iml
+smush/.idea/vcs.xml
+smush/.idea/workspace.xml
