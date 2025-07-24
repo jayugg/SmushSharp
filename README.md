@@ -63,7 +63,7 @@ class Program
     static void Main(string[] args)
     {
         // Wait up to 1 seconds for a URL
-        string? launchUrl = UrlDetector.DetectLaunchUrl(2.0);
+        string? launchUrl = SmushSharp.DetectLaunchUrl(2.0);
         // Your code to handle the URL ...
     }
 }
@@ -74,6 +74,6 @@ class Program
      ```bash
      /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f <yourAppPath>.app
      ```
- - If you now launch via `open your-custom-scheme://foo`, the URL will be relayed into your C# callback.
+ - If you now launch via `open your-custom-scheme://foo`, the URL will be detected by the code.
 
 ---
