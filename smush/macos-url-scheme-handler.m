@@ -24,25 +24,31 @@ static NSString *g_detectedURL = nil;
 @end
 
 __attribute__((visibility("default")))
-const char *DetectLaunchUrlNative(double timeoutSeconds)
+const char* DetectLaunchUrlNative(double timeoutSeconds)
 {
   @autoreleasepool {
+    // clear any old URL
     [g_detectedURL release];
     g_detectedURL = nil;
 
     NSApplication *app = [NSApplication sharedApplication];
     app.delegate = [[UrlDelegate alloc] init];
 
-    dispatch_after(
-      dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutSeconds * NSEC_PER_SEC)),
-      dispatch_get_main_queue(),
-      ^{ [NSApp stop:nil]; }
-    );
+    NSDate *deadline = [NSDate dateWithTimeIntervalSinceNow:timeoutSeconds];
 
-    [app run]; // blocks until stop()
+    // pump the run loop until we get a URL or timeout
+    while (g_detectedURL == nil
+           && [deadline timeIntervalSinceNow] > 0)
+    {
+      // runs one pass in the *default* mode for up to 0.1s
+      [[NSRunLoop currentRunLoop]
+         runMode:NSDefaultRunLoopMode
+        beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    }
+
+    if (!g_detectedURL) return NULL;
+
+    // we’ve copied the NSString, so UTF8String is valid
+    return [g_detectedURL UTF8String];
   }
-
-  if (!g_detectedURL) return NULL;
-  // UTF8String is owned by the NSString we just copied, so it’s safe
-  return [g_detectedURL UTF8String];
 }

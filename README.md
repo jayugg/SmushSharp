@@ -31,7 +31,12 @@ Once you’ve **packed**, you can install the nuget package like this:
 
 ```bash
 # from your own .NET app folder
-dotnet add package SmushSharp --version 1.0.0 --source .
+dotnet add package SmushSharp --version 1.x.x --source .
+```
+
+Alternatively, you can get it from NuGet.org:
+```bash
+dotnet add package SmushSharp --version 1.x.x
 ```
 ---
 
