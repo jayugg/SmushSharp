@@ -46,9 +46,16 @@ const char* DetectLaunchUrlNative(double timeoutSeconds)
         beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
     }
 
-    if (!g_detectedURL) return NULL;
+	if (!g_detectedURL) return NULL;
 
-    // we’ve copied the NSString, so UTF8String is valid
-    return [g_detectedURL UTF8String];
+	// Duplicate the bytes with malloc (strdup) since pointer might have a lifetime shorter than NSString
+	// https://developer.apple.com/documentation/foundation/nsstring#//apple_ref/occ/instp/NSString/UTF8String
+	const char *utf8 = strdup([g_detectedURL UTF8String]);
+	// Drop our retain so the NSString can disappear, this is because it won't be needed again
+	[g_detectedURL release];
+	g_detectedURL = nil;
+	// Return the caller‑owned buffer, C# side frees with free()
+	return utf8;
+	// For more info on returning strings: https://stackoverflow.com/questions/27914934/how-to-replace-a-char-in-an-an-char-array-xcode?utm_source=chatgpt.com
   }
 }

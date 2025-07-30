@@ -18,7 +18,13 @@ public static class SmushSharp
     {
         IntPtr ptr = NativeMethods.DetectLaunchUrlNative(timeoutSeconds);
         if (ptr == IntPtr.Zero) return null;
-        string? url = Marshal.PtrToStringUTF8(ptr);
-        return url;
+        try
+        {
+            return Marshal.PtrToStringUTF8(ptr);
+        }
+        finally
+        {
+            unsafe { NativeMemory.Free((void*)ptr); }
+        }
     }
 }
