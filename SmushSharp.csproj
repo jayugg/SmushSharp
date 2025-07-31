@@ -7,7 +7,7 @@
         <!-- NuGet metadata -->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>SmushSharp</PackageId>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <Authors>jayu</Authors>
         <Description>Simple macOS URL-scheme handler shim for .NET 8 (x64)</Description>
         <PackageTags>macos;cocoa;url;scheme;interop</PackageTags>
@@ -27,7 +27,7 @@
     <!-- Before each build, compile the Obj-C shim -->
     <Target Name="CompileNativeShim" BeforeTargets="BeforeBuild">
         <MakeDir Directories="$(MSBuildThisFileDirectory)runtimes/osx-x64/native" />
-        <Exec Command="clang -dynamiclib -arch x86_64 -framework Cocoa -o &quot;$(MSBuildThisFileDirectory)runtimes/osx-x64/native/libsmush.dylib&quot; &quot;$(MSBuildThisFileDirectory)smush/macos-url-scheme-handler.m&quot;" />
+        <Exec Command="clang -fobjc-arc -dynamiclib -arch x86_64 -framework Cocoa -o &quot;$(MSBuildThisFileDirectory)runtimes/osx-x64/native/libsmush.dylib&quot; &quot;$(MSBuildThisFileDirectory)smush/macos-url-scheme-handler.m&quot;" />
     </Target>
 
     <!-- Include the compiled dylib in the NuGet and copy it to output -->
