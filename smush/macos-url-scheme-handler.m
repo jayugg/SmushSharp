@@ -27,24 +27,17 @@ __attribute__((visibility("default")))
 const char* DetectLaunchUrlNative(double timeoutSeconds)
 {
   @autoreleasepool {
-    // clear any old URL
-    [g_detectedURL release];
-    g_detectedURL = nil;
-
     NSApplication *app = [NSApplication sharedApplication];
     app.delegate = [[UrlDelegate alloc] init];
 
-    NSDate *deadline = [NSDate dateWithTimeIntervalSinceNow:timeoutSeconds];
+    dispatch_after(
+      dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutSeconds * NSEC_PER_SEC)),
+      dispatch_get_main_queue(),
+      ^{ [NSApp stop:nil]; }
+    );
 
-    // pump the run loop until we get a URL or timeout
-    while (g_detectedURL == nil
-           && [deadline timeIntervalSinceNow] > 0)
-    {
-      // runs one pass in the *default* mode for up to 0.1s
-      [[NSRunLoop currentRunLoop]
-         runMode:NSDefaultRunLoopMode
-        beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    }
+    [app run]; // blocks until stop()
+  }
 
 	if (!g_detectedURL) return NULL;
 
@@ -57,5 +50,4 @@ const char* DetectLaunchUrlNative(double timeoutSeconds)
 	// Return the caller‑owned buffer, C# side frees with free()
 	return utf8;
 	// For more info on returning strings: https://stackoverflow.com/questions/27914934/how-to-replace-a-char-in-an-an-char-array-xcode?utm_source=chatgpt.com
-  }
 }
