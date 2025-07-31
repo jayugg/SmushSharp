@@ -1,5 +1,4 @@
 #import <Cocoa/Cocoa.h>
-#import <stdlib.h> // for strdup
 
 static NSString *g_detectedURL = nil;
 
